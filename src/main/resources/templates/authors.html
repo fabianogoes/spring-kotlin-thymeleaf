@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .jumbotron {
+            padding: 1rem; 1rem; !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+<body class="container">
+    <div class="jumbotron text-center">
+        <h2><i class="fas fa-user"></i> Author</h2>
+        <div class="alert alert-success alert-dismissible fade show " role="alert" th:if="${success_message != null}">
+            <span th:text="${success_message}"></span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="card" th:if="${author != null}">
+        <div class="card-body">
+            <form action="#" th:action="@{/authors}" method="post" th:object="${author}">
+                <div class="row">
+                    <div class="col-2">
+                        <label>ID:</label>
+                        <input type="text" th:field="*{id}" class="form-control form-control-sm" readonly>
+                    </div>
+                    <div class="col-10">
+                        <div th:class="${#fields.hasErrors('name') ?'form-group has-error' : 'form-group'}">
+                            <label for="name" class="control-label">Name</label>
+                            <input type="text" class="form-control form-control-sm" id="name" placeholder="Name..." th:field="*{name}" autofocus/>
+                            <span th:each="err: ${#fields.errors('name')}" class="help-block text-danger" th:text="${err}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>E-mail:</label>
+                        <input type="email" th:field="*{email}" class="form-control">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-check"></i> Save
+                        </button>
+                    </div>
+                    <div class="col-8"></div>
+                    <div class="col-2">
+                        <a href="/" class="btn btn-secondary float-right">
+                            <i class="fas fa-user-times"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div th:if="${authors != null}">
+        <br>
+        <table class="table table-sm table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center">ID</th>
+                <th>Name</th>
+                <th>E-mail</th>
+                <th class="text-center">
+                    <a href="" th:href="@{/authors/new}" class="btn btn-light btn-sm">
+                        <i class="fas fa-user-plus"></i>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${authors}">
+                <td class="text-center" th:text="${author.id}"></td>
+                <td th:text="${author.name}"></td>
+                <td th:text="${author.email}"></td>
+                <td class="text-center">
+                    <a href="" th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-success btn-sm">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                    <a href="" th:href="@{/authors/delete/{id}(id=${author.id})}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-user-minus"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>
